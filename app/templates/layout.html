@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="/static/js/jquery.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+    
+    <title>Email App</title>    
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+
+    <div class="container">
+	    <strong><nav class="navbar navbar-default" role="navigation">
+	    	<ul class="nav navbar-nav">
+	         <li><a href="/">Home</a></li>
+	      </ul>
+	    </nav></strong>
+  	</div>
+
+  </head>
+  <body>
+     
+    <div class="container">
+      {% block content %}
+      {% endblock %}
+    </div>
+
+  </body>
+
+  <script type="text/javascript"> 
+
+    $('input[name=options]').change(function() {
+        if ($(this).val() == "url") {
+            $('input[name=input]').prop('type', 'url');
+        } else if ($(this).val() == "textbody") {
+            $('input[name=input]').prop('type', 'text');
+        }
+    });
+
+    </script>
+</html>

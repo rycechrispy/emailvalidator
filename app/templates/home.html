@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<header>
+	<h1 class="logo">Email Validator</h1>
+</header> 
+
+<form action="{{url_for('show_valid_emails')}}" method=post role="form">
+	<label for="input">Email:</label>
+	<div class="input-group">
+		<input type="text" name="input" class="form-control" required>
+		<span class="input-group-btn">
+			<button class="btn btn-success" type="submit">Check</button>
+		</span>
+	</div>
+</form>
+</br>
+
+{% if is_valid %}
+<label for="valid" id="valid">Valid Emails:</label>
+<input type="text" name="valid" class="form-control" value='{{is_valid}}'>
+{% elif invalid %}
+<label for="invalid" id="invalid">Invalid Emails:</label>
+<input type="text" name="invalid" class="form-control" value='{{invalid}}'>
+{% endif %}
+</br>
+
+{% if suggest %}
+<label for="suggest" id="suggest">Suggested Emails:</label>
+<input type="text" name="suggest" class="form-control" value='{{suggest}}'>
+</br>
+{% endif %}
+
+<style type='text/css'>
+	#valid {
+		color:green;
+	}
+	#invalid {
+		color:red;
+	}
+	#suggest {
+		color:blue;
+	}
+</style>
+
+
+{% endblock %}
