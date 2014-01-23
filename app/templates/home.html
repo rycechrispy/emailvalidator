@@ -5,8 +5,8 @@
 	<h1 class="logo">Email Validator</h1>
 </header> 
 
-<form action="{{url_for('show_valid_emails')}}" method=post role="form">
-	<label for="input">Email:</label>
+<!-- <form action="{{url_for('show_valid_emails')}}" method=post role="form">
+	<label for="input">Emails (separate email with a comma):</label>
 	<div class="input-group">
 		<input type="text" name="input" class="form-control" required>
 		<span class="input-group-btn">
@@ -14,12 +14,64 @@
 		</span>
 	</div>
 </form>
+</br> -->
+
+<form action="{{url_for('show_valid_emails')}}" method=post role="form">
+	<label for="input">Emails (each email must be separated with a new line and duplicates will be removed):</label>
+	<textarea class="form-control" name="input" rows="5" required></textarea>
+	</br>
+	<button type="submit" class="btn btn-success">Check</button>
+</form>
 </br>
 
 {% if is_valid %}
 <label for="valid" id="valid">Valid Emails:</label>
 <input type="text" name="valid" class="form-control" value='{{is_valid}}'>
-{% elif invalid %}
+{% endif %}
+</br>
+
+{% if invalids or valids %}
+<div class=''>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Email</th>
+				<th>Status</th>
+				<th>Suggested</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for i in range(valid_length) %}
+				<tr><td>{{valids[i]}}</td><td>Valid</td><td></td></tr>
+			{% endfor %}
+			{% for i in range(invalid_length) %}
+				<tr><td>{{invalids[i]}}</td><td>Invalid</td><td>{{suggests[i]}}</td></tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+{% endif %} 
+
+<!-- n2 -->
+<!-- {% if invalids %}
+<div class=''>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Invalid</th>
+				<th>Suggested</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for i in range(invalid_length) %}
+				<tr><td>{{invalids[i]}}</td><td>{{suggests[i]}}</td></tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+{% endif %} -->
+
+{% if invalid %}
 <label for="invalid" id="invalid">Invalid Emails:</label>
 <input type="text" name="invalid" class="form-control" value='{{invalid}}'>
 {% endif %}
