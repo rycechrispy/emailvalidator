@@ -1,6 +1,5 @@
 from flask import render_template, request, redirect, url_for, Flask
 from flanker.addresslib import address, validate
-import re
 
 app = Flask(__name__)
 app.secret_key = "gk_-+x6q@c)hf*w)bh0t#fh7)mz3liy=*godtwl#3fj%&7eg6xxx("
@@ -14,7 +13,7 @@ def main_view():
 		return render_template('home.html')
 
 def get_unique_emails(email):
-	email = re.sub('[\s\n]+', ',', email)
+	email = email.replace("\r\n", ",")
 	list_email = list(set(email.split(","))) #remove duplicate emails
 	unique_emails = ','.join(list_email)
 	return unique_emails
@@ -30,7 +29,7 @@ def check_emails(email):
 	if len(valid_emails) != 0:
 		valids = valid_emails
 	if len(invalid_emails) != 0:
-		invalids = [unique_emails.encode("ascii") for unique_emails in invalid_emails] #invalid emails come out as unicode - change to regular str
+		invalids = [unique_emails.encode("ascii").replace("<", "").replace(">", "") for unique_emails in invalid_emails] #invalid emails come out as unicode - change to regular str
 		suggests = [str(validate.suggest_alternate(unique_emails)) for unique_emails in invalids] #suggest alternate returns None - cast None to str
 
 	return render_template('home.html', invalids=invalids, valids=valids, suggests=suggests, valid_length=len(valids), invalid_length=len(invalids))
