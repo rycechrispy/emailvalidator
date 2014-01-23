@@ -5,26 +5,22 @@ import re
 app = Flask(__name__)
 app.secret_key = "gk_-+x6q@c)hf*w)bh0t#fh7)mz3liy=*godtwl#3fj%&7eg6xxx("
 
-@app.route('/')
-def main_view():
-	return render_template('home.html')
-
 @app.route('/', methods=['GET', 'POST'])
-def show_valid_emails():
+def main_view():
 	if request.method == 'POST':
 		email = request.form['input']
-		return check_mulitple_email(email)
-		# if "\n" in email:
-		# 	return check_mulitple_email(email)
-		# else:
-		# 	return check_single_email(email)
+		return check_emails(email)
 	else:
-		return redirect(url_for('main_view'))
+		return render_template('home.html')
 
-def check_mulitple_email(email):
+def get_unique_emails(email):
 	email = re.sub('[\s\n]+', ',', email)
 	list_email = list(set(email.split(","))) #remove duplicate emails
 	unique_emails = ','.join(list_email)
+	return unique_emails
+
+def check_emails(email):
+	unique_emails = get_unique_emails(email)
 
 	valid = address.validate_list(unique_emails, as_tuple=True)
 	valid_emails = valid[0] #first list in tuple is valid emails
@@ -39,40 +35,6 @@ def check_mulitple_email(email):
 
 	return render_template('home.html', invalids=invalids, valids=valids, suggests=suggests, valid_length=len(valids), invalid_length=len(invalids))
 
-
-	## n1
-	# is_valid, invalid, suggest = '', '', ''
-	# if len(valid_emails) != 0:
-	# 	is_valid = str(valid_emails)
-	# if len(invalid_emails) != 0:
-	# 	stringify = [email.encode("ascii") for email in invalid_emails]
-	# 	invalid = ', '.join(stringify)
-	# 	suggested_emails = [str(validate.suggest_alternate(email)) for email in stringify]
-	# 	suggest = ', '.join(suggested_emails)
-
-	#return str(suggested_emails)
-	# return render_template('home.html', invalid=invalid, is_valid=is_valid, suggest=suggest)
-
-	## n2
-	# is_valid, invalids, suggests = [], [], []
-	# if len(valid_emails) != 0:
-	# 	is_valid = str(valid_emails)
-	# if len(invalid_emails) != 0:
-	# 	invalids = [email.encode("ascii") for email in invalid_emails]
-	# 	suggests = [str(validate.suggest_alternate(email)) for email in invalids]
-
-	# return render_template('home.html', invalids=invalids, is_valid=is_valid, suggests=suggests, length=len(invalids))
-
-def check_single_email(email):
-	valid = address.validate_address(email) #email address object
-	is_valid = None
-	if valid == None:
-		suggest = validate.suggest_alternate(email)
-		invalid = email
-		return render_template('home.html', invalid=invalid, suggest=suggest)
-	else:
-		is_valid = email
-		return render_template('home.html', is_valid=is_valid)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5002)

@@ -4,8 +4,9 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <script type="text/javascript" src="/static/js/jquery.js"></script>
     <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/js/tabletocsv.js"></script>
     
-    <title>Email App</title>    
+    <title>Email Validator</title>    
     <link rel="stylesheet" href="/static/css/bootstrap.css">
 
     <div class="container">
@@ -25,16 +26,4 @@
     </div>
 
   </body>
-
-  <script type="text/javascript"> 
-
-    $('input[name=options]').change(function() {
-        if ($(this).val() == "url") {
-            $('input[name=input]').prop('type', 'url');
-        } else if ($(this).val() == "textbody") {
-            $('input[name=input]').prop('type', 'text');
-        }
-    });
-
-    </script>
 </html>
